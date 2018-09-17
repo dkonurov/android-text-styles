@@ -1,0 +1,6 @@
+{
+  "name": "Funtasty TextStyles",
+  "description": "Sample extension description.",
+  "version": "0.1.0",
+  "moduleURL": "./main.js"
+}

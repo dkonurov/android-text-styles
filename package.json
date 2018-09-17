@@ -1,0 +1,21 @@
+{
+  "name": "android-text-styles",
+  "version": "0.1.0",
+  "description": "Extensions for correct extends in style files.",
+  "scripts": {
+    "start": "zem start",
+    "build": "zem build",
+    "clean": "zem clean",
+    "exec": "zem exec"
+  },
+  "zeplin": {
+    "displayName": "E-Legion Android Text Styles",
+    "projectTypes": [
+      "android"
+    ]
+  },
+  "dependencies": {
+    "xml-js": "^1.6.7",
+    "zem": "^0.1.2"
+  }
+}
