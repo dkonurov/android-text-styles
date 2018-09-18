@@ -1,4 +1,6 @@
-import {getItems, generateColor, removeNotOverride} from "./androidify"
+import {getItems, removeNotOverride, findSimilarStyle} from "./styleUtils"
+import {getAttributes, removeNotOverrideAttributes} from "./textViewUtils";
+import {generateColor} from "./util";
 
 var convert = require('xml-js');
 var options = {compact: true, ignoreComment: true, spaces: 4};
@@ -71,6 +73,23 @@ function styleguideTextStyles(context, textStyles) {
     };
 }
 
+function layer(context, selectedLayer) {
+    if (selectedLayer.type === "text") {
+        console.log(selectedLayer);
+        var styles = context.project.textStyles;
+        var find = findSimilarStyle(selectedLayer.defaultTextStyle, styles);
+        var findAttributes = getAttributes(find);
+        var textView = getAttributes(selectedLayer.defaultTextStyle);
+        removeNotOverrideAttributes(findAttributes, textView, find.name);
+        textView.TextView._attributes["android:layout_width"] = "wrap_content";
+        textView.TextView._attributes["android:layout_height"] = "wrap_content";
+        return {
+            code: convert.json2xml(textView, options),
+            language: "xml"
+        };
+    }
+}
+
 function exportStyleguideColors(context, colors) {
 }
 
@@ -82,5 +101,6 @@ function comment(context, text) {
 
 export default {
     styleguideTextStyles,
-    styleguideColors
+    styleguideColors,
+    layer
 };
