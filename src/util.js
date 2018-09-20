@@ -20,8 +20,8 @@ export function getTextStyle(style) {
     return textStyle;
 }
 
-export function styleToArray(style) {
-    var attributes = [];
+export function styleToArray(style, isLink) {
+    var attributes = {};
     attributes["android:textSize"] = style.fontSize + "sp";
     const lineSpace = style.lineHeight - style.fontSize;
     if (lineSpace > 0) {
@@ -35,12 +35,16 @@ export function styleToArray(style) {
 
     if (style.hasOwnProperty("color")) {
         if (style.color.name !== undefined) {
-            attributes["android:textColor"] = style.color.name;
+            if (isLink) {
+                attributes["android:textColor"] = "@color/" + style.color.name;
+            } else {
+                attributes["android:textColor"] = style.color.name;
+            }
         } else {
-            attributes["android:textColor"] = generateColor(style.color);
+            attributes["android:textColor"] = "#" + generateColor(style.color);
         }
     }
-    if (style.letterSpacing !== 0) {
+    if (style.letterSpacing !== 0 && style.letterSpacing !== undefined) {
         attributes["android:letterSpacing"] = style.letterSpacing;
     }
     return attributes;

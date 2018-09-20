@@ -75,14 +75,25 @@ function styleguideTextStyles(context, textStyles) {
 
 function layer(context, selectedLayer) {
     if (selectedLayer.type === "text") {
-        console.log(selectedLayer);
-        var styles = context.project.textStyles;
-        var find = findSimilarStyle(selectedLayer.defaultTextStyle, styles);
-        var findAttributes = getAttributes(find);
-        var textView = getAttributes(selectedLayer.defaultTextStyle);
+        let styles = context.project.textStyles;
+        let find = findSimilarStyle(selectedLayer.defaultTextStyle, styles);
+        let findAttributes = getAttributes(find);
+        let defaultStyle = Object.assign({}, selectedLayer.defaultTextStyle);
+        if (defaultStyle.color !== undefined) {
+            let color = defaultStyle.color;
+            let hex = color.toHex();
+            let search = {hex: "" + hex.r + hex.g + hex.b, alpha: color.a};
+            let findColor = context.project.findColorByHexAndAlpha(search);
+            if (findColor !== undefined) {
+                defaultStyle.color = findColor;
+            }
+        }
+
+        let textView = getAttributes(defaultStyle);
         removeNotOverrideAttributes(findAttributes, textView, find.name);
         textView.TextView._attributes["android:layout_width"] = "wrap_content";
         textView.TextView._attributes["android:layout_height"] = "wrap_content";
+        textView.TextView._attributes["tools:text"] = selectedLayer.content;
         return {
             code: convert.json2xml(textView, options),
             language: "xml"

@@ -17,9 +17,10 @@ function getItems(style) {
         item: [],
 
     };
-    styleToArray(style).forEach(function (value, key) {
-        element.item.push(createStyleItem(key, value));
-    });
+    let items = styleToArray(style, false);
+    for(let key in items) {
+        element.item.push(createStyleItem(key, items[key]));
+    }
     return element;
 }
 
