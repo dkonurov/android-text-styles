@@ -9,7 +9,7 @@
     "exec": "zem exec"
   },
   "zeplin": {
-    "displayName": "E-Legion Android Text Styles",
+    "displayName": "e-Legion Android Text Styles",
     "projectTypes": [
       "android"
     ]

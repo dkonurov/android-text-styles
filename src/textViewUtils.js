@@ -6,8 +6,8 @@ export function getAttributes(style) {
             _attributes: {},
         }
     };
-    var items = styleToArray(style, true);
-    for (var key in items) {
+    let items = styleToArray(style);
+    for (let key in items) {
         element.TextView._attributes[key] = items[key];
     }
     return element;
@@ -16,11 +16,11 @@ export function getAttributes(style) {
 export function removeNotOverrideAttributes(parentStyle, current, name) {
     let childAttributes = Object.assign({}, current.TextView._attributes);
     let parentAttributes = Object.assign({}, parentStyle.TextView._attributes);
-    for (var index in childAttributes) {
-        for (var parentIndex in parentAttributes) {
+    for (let index in childAttributes) {
+        for (let parentIndex in parentAttributes) {
             if (parentIndex === index) {
-                var type = childAttributes[index];
-                var parentItem = parentAttributes[parentIndex];
+                let type = childAttributes[index];
+                let parentItem = parentAttributes[parentIndex];
                 if (type === parentItem) {
                     delete childAttributes[index];
                 }

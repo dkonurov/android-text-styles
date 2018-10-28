@@ -17,7 +17,7 @@ function getItems(style) {
         item: [],
 
     };
-    let items = styleToArray(style, false);
+    let items = styleToArray(style);
     for(let key in items) {
         element.item.push(createStyleItem(key, items[key]));
     }
@@ -26,8 +26,8 @@ function getItems(style) {
 
 function removeNotOverride(parentStyle, current) {
     current.item = current.item.filter(function (type) {
-        for (var parentIndex in parentStyle.item) {
-            var parentItem = parentStyle.item[parentIndex];
+        for (let parentIndex in parentStyle.item) {
+            let parentItem = parentStyle.item[parentIndex];
             if (type._attributes.name === parentItem._attributes.name && type._text === parentItem._text) {
                 return false;
             }

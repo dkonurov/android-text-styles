@@ -20,32 +20,68 @@ export function getTextStyle(style) {
     return textStyle;
 }
 
-export function styleToArray(style, isLink) {
-    var attributes = {};
-    attributes["android:textSize"] = style.fontSize + "sp";
+function textSize(style) {
+    return style.fontSize + "sp";
+}
+
+function getLineSpace(style) {
     const lineSpace = style.lineHeight - style.fontSize;
     if (lineSpace > 0) {
-        attributes["android:lineSpacingExtra"] = lineSpace + "sp";
+        return lineSpace + "sp";
+    } else {
+        return null
     }
+}
+
+function getGravity(style) {
     if (style.hasOwnProperty("textAlign") && style.textAlign !== undefined) {
-        attributes["android:gravity"] = getRTLTextAlignment(style.textAlign);
+        return getRTLTextAlignment(style.textAlign);
+    } else {
+        return null;
+    }
+}
+
+function getColor(style) {
+    if (style.hasOwnProperty("color")) {
+        if (style.color.name !== undefined) {
+            return "@color/" + style.color.name;
+        } else {
+            return "#" + generateColor(style.color);
+        }
+    }
+    return null;
+}
+
+function getLetterSpacing(style) {
+    if (style.letterSpacing !== 0 && style.letterSpacing !== undefined) {
+        return style.letterSpacing;
+    } else {
+        return null
+    }
+}
+
+export function styleToArray(style) {
+    let attributes = {};
+    attributes["android:textSize"] = textSize(style);
+    const lineSpace = getLineSpace(style);
+    if (lineSpace !== null) {
+        attributes["android:lineSpacingExtra"] = lineSpace;
+    }
+    const gravity = getGravity(style);
+    if (gravity !== null) {
+        attributes["android:gravity"] = gravity
     }
 
     attributes["android:textStyle"] = getTextStyle(style);
 
-    if (style.hasOwnProperty("color")) {
-        if (style.color.name !== undefined) {
-            if (isLink) {
-                attributes["android:textColor"] = "@color/" + style.color.name;
-            } else {
-                attributes["android:textColor"] = style.color.name;
-            }
-        } else {
-            attributes["android:textColor"] = "#" + generateColor(style.color);
-        }
+    let color = getColor(style);
+    if (color !== null) {
+        attributes["android:textColor"] = color
     }
-    if (style.letterSpacing !== 0 && style.letterSpacing !== undefined) {
-        attributes["android:letterSpacing"] = style.letterSpacing;
+
+    let letterSpacing = getLetterSpacing(style);
+    if (letterSpacing !== null) {
+        attributes["android:letterSpacing"] = letterSpacing
     }
     return attributes;
 }
